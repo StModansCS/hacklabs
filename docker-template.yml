@@ -1,0 +1,56 @@
+services:
+  kali:
+    image: stmodanscs/kali-2023.1
+    container_name: hacklabXX_kali
+    entrypoint: /entrypoint.sh
+    environment:
+      PASS: myPass
+      ROOT: yes
+      SSH:  yes
+    networks:
+      localnet:
+        ipv4_address: 172.0.X.11
+
+  metasploitable2:
+    image: stmodanscs/metasploitable2
+    container_name: hacklabXX_metasploitable2
+    entrypoint: /entrypoint.sh
+    environment:
+      PASS: myPass
+      ROOT: yes
+      SSH:  yes
+      #CUPS: yes
+      #FTP:  yes
+      #HTTP: yes
+      #IRC:  yes
+      SMB:  yes
+      #SQL:  yes
+    networks:
+      localnet:
+        ipv4_address: 172.0.X.12
+
+  metasploitable3:
+    image: stmodanscs/metasploitable3-ub1404
+    container_name: hacklabXX_metasploitable3
+    entrypoint: /entrypoint.sh
+    environment:
+      PASS: myPass
+      ROOT: yes
+      SSH:  yes
+      CUPS: yes
+      FTP:  yes
+      HTTP: yes
+      IRC:  yes
+      SMB:  yes
+      SQL:  yes
+    networks:
+      localnet:
+        ipv4_address: 172.0.X.13
+
+
+networks:
+  localnet:
+    ipam:
+      config:
+        - subnet: 172.0.X.0/24
+
