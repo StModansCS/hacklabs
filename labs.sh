@@ -21,13 +21,13 @@ elif [ $1 == "create" ] ; then
     read -p "How many hacklabs do you want to create?: " folder_count
     IFS=$'\r\n' GLOBIGNORE='*' command eval 'passwords=($(cat passwords.txt))'
     
-    if [[ ${#passwords[@]} -lt $folder_count ]]; then
+    if [ ${#passwords[@]} -lt $folder_count ]; then
         echo "Not enough entries in passwords.txt. Found ${#passwords[@]}."
         exit 1
     fi
     
     for i in $(seq -f "%02g" 0 $((folder_count-1))); do
-        if [[ -d "$lab_path/hacklab$i" ]]; then
+        if [ -d "$lab_path/hacklab$i" ]; then
             rm -rf "$lab_path/hacklab$i"
         fi
         
