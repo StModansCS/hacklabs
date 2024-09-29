@@ -61,4 +61,3 @@ elif [ $1 == "down" ]; then
 else
     print_usage
 fi
-
