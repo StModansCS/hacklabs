@@ -40,7 +40,7 @@ elif [ $1 == "create" ] ; then
     done
 elif [ $1 == "up" ] ; then
     folder_count=$(find "$lab_path" -maxdepth 1 -type d -name "hacklab??" | wc -l)
-    if [[ $folder_count -eq 0 ]]; then
+    if [ $folder_count -eq 0 ]; then
         echo "No hacklab folders found. Run 'labs.sh create' first."
         exit 1
     fi
