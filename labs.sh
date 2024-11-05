@@ -52,7 +52,13 @@ elif [ $1 == "up" ] ; then
     echo
     echo 'All wrapped up here, sir. Will there be anything else?'
 elif [ $1 == "down" ]; then
-    for i in {00..00}; do
+    folder_count=$(find "$lab_path" -maxdepth 1 -type d -name "hacklab??" | wc -l)
+    if [ $folder_count -eq 0 ]; then
+        echo "No hacklab folders found. Run 'labs.sh create' first."
+        exit 1
+    fi
+    
+    for i in $(seq -f "%02g" 0 $((folder_count-1))); do
         docker compose -f $lab_path/hacklab$i/docker-compose.yml down
     done
     #docker compose -f $lab_path/edge/docker-compose.yml down
