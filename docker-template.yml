@@ -50,6 +50,7 @@ services:
 
 networks:
   localnet:
+    internal: true
     ipam:
       config:
         - subnet: 172.0.X.0/24
