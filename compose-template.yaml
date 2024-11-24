@@ -1,19 +1,21 @@
 services:
-  kali:
+  hacklabXXXX_kali:
     image: stmodanscs/kali-2023.1
-    container_name: hacklabXX_kali
+    container_name: hacklabXXXX_kali
     entrypoint: /entrypoint.sh
     environment:
       PASS: myPass
       ROOT: yes
       SSH:  yes
     networks:
-      localnet:
-        ipv4_address: 172.0.X.11
+      hacklabXXXX_localnet:
+        ipv4_address: 172.0.XXXX.11
+#      hacklabXXXX_hacknet:
+#        ipv4_address: 172.1.XXXX.11
 
-  metasploitable2:
+  hacklabXXXX_metasploitable2:
     image: stmodanscs/metasploitable2
-    container_name: hacklabXX_metasploitable2
+    container_name: hacklabXXXX_metasploitable2
     entrypoint: /entrypoint.sh
     environment:
       PASS: myPass
@@ -26,12 +28,12 @@ services:
       SMB:  yes
       #SQL:  yes
     networks:
-      localnet:
-        ipv4_address: 172.0.X.12
+      hacklabXXXX_localnet:
+        ipv4_address: 172.0.XXXX.12
 
-  metasploitable3:
+  hacklabXXXX_metasploitable3:
     image: stmodanscs/metasploitable3-ub1404
-    container_name: hacklabXX_metasploitable3
+    container_name: hacklabXXXX_metasploitable3
     entrypoint: /entrypoint.sh
     environment:
       PASS: myPass
@@ -44,14 +46,21 @@ services:
       SMB:  yes
       SQL:  yes
     networks:
-      localnet:
-        ipv4_address: 172.0.X.13
-
+      hacklabXXXX_localnet:
+        ipv4_address: 172.0.XXXX.13
 
 networks:
-  localnet:
+  hacklabXXXX_localnet:
+    name: hacklabXXXX_localnet
     internal: true
     ipam:
       config:
-        - subnet: 172.0.X.0/24
-
+        - subnet: 172.0.XXXX.0/24
+#  hacklabXXXX_hacknet:
+#    name: hacklabXXXX_hacknet
+#    driver: macvlan
+#    driver_opts:
+#      parent: ens19
+#    ipam:
+#      config:
+#        - subnet: 172.1.0.0/16
