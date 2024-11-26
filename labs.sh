@@ -50,21 +50,40 @@ elif [ $1 == "create" ] ; then
         echo "Not enough entries in passwords.txt. Found ${#passwords[@]}"
         exit 1
     fi
-    
-    # for each lab
-    for i in $(seq -f "%02g" 0 $((lab_count - 1))); do
-        # remove old hacklabs
-        rm -rf "${lab_path}/hacklab${i}"
 
-        # create docker compose file
+    # remove old hacklabs
+    rm -rf "hacklab"[0-9][0-9]
+    
+    # create hacklabs
+    for i in $(seq -f "%02g" 0 $((lab_count - 1))); do
+        # create docker compose files
         mkdir "${lab_path}/hacklab${i}"
-        cp "${lab_path}/compose-template.yaml" "${lab_path}/hacklab${i}/compose-hacklab${i}.yaml"
+        cp "${lab_path}/compose-template.yaml" "${lab_path}/hacklab${i}/compose.yaml"
         
-        # edit compose file
-        sed -i "s/hacklabXXXX_/hacklab${i}_/g" "${lab_path}/hacklab${i}/compose-hacklab${i}.yaml"
-        sed -i "s/.XXXX./.$(echo "${i}" | sed "s/^0//")./g" "${lab_path}/hacklab${i}/compose-hacklab${i}.yaml"
-        sed -i "s/PASS: myPass/PASS: ${passwords[$(echo "${i}" | sed "s/^0//")]}/g" "${lab_path}/hacklab${i}/compose-hacklab${i}.yaml"
+        # edit compose files
+        sed -i "s/hacklabXXXX_/hacklab${i}_/g" "${lab_path}/hacklab${i}/compose.yaml"
+        sed -i "s/.XXXX./.$(echo "${i}" | sed "s/^0//")./g" "${lab_path}/hacklab${i}/compose.yaml"
+        sed -i "s/PASS: myPass/PASS: ${passwords[$(echo "${i}" | sed "s/^0//")]}/g" "${lab_path}/hacklab${i}/compose.yaml"
     done
+
+    # remove old hacklab networks from edge
+    sed -i "/networks:/q" "${lab_path}/edge/compose.yaml"
+
+    # add hacklab networks to edge
+    for i in $(seq -f "%02g" 0 $((lab_count - 1))); do
+        # get network name from compose file
+        sed -n "/^networks:/,/^[^ ]/ { /name:/s/.*name: \(.*\)/      - \1/p }" "${lab_path}/hacklab${i}/compose.yaml" >> "${lab_path}/edge/compose.yaml"
+    done
+
+    # add hacklab network definitions to edge
+    echo >> "${lab_path}/edge/compose.yaml"
+    echo "networks:" >> "${lab_path}/edge/compose.yaml"
+    echo "  # see ../hacklabXX/compose.yaml" >> "${lab_path}/edge/compose.yaml"
+    for i in $(seq -f "%02g" 0 $((lab_count - 1))); do
+        sed -n "/^networks:/,/^[^ ]/ { /name:/s/.*name: \(.*\)/  \1:/p }" "${lab_path}/hacklab${i}/compose.yaml" >> "${lab_path}/edge/compose.yaml"
+        echo "    external: true" >> "${lab_path}/edge/compose.yaml"
+    done
+        
 elif [ $1 == "up" ] ; then
     # remove IP from hacklab server
     ##ip address flush dev ens18
@@ -74,17 +93,24 @@ elif [ $1 == "up" ] ; then
 
     # check there are labs to bring up
     if [ $lab_count -eq 0 ]; then
-        echo "No hacklabs found. Run 'hacklabs.sh create' first."
+        echo "No hacklabs found. Run 'labs.sh create' first."
         exit 1
     fi
+
+    # start hacknet network
+    docker compose --all-resources -f "${lab_path}/hacknet/compose.yaml" up
     
     # start hacklabs
     for i in $(seq -f "%02g" 0 $((lab_count - 1))); do
-        docker compose -f "${lab_path}/hacklab${i}/compose-hacklab${i}.yaml" up -d
+        docker compose -f "${lab_path}/hacklab${i}/compose.yaml" up -d
     done
 
+    # start edge
+    docker compose --all-resources -f "${lab_path}/edge/compose.yaml" up -d
+
     echo
-    echo 'All wrapped up here, sir. Will there be anything else?'    
+    echo "All wrapped up here, sir. Will there be anything else?"
+    echo
 elif [ $1 == "down" ]; then
     # get number of labs
     lab_count=$(find "${lab_path}" -maxdepth 1 -type d -name "hacklab??" | wc -l)
@@ -94,14 +120,21 @@ elif [ $1 == "down" ]; then
         echo "No hacklab folders found. Run 'labs.sh create' first."
         exit 1
     fi
-    
+
+    # stop edge
+    docker compose --all-resources -f "${lab_path}/edge/compose.yaml" down
+
     # stop hacklabs
     for i in $(seq -f "%02g" 0 $((lab_count - 1))); do
-        docker compose -f "${lab_path}/hacklab${i}/compose-hacklab${i}.yaml" down
+        docker compose -f "${lab_path}/hacklab${i}/compose.yaml" down
     done
 
+    # stop hacknet network
+    docker compose --all-resources -f "${lab_path}/hacknet/compose.yaml" down
+
     echo
-    echo 'The Clean Slate Protocol, sir?'
+    echo "The Clean Slate Protocol, sir?"
+    echo
 
     # restore IP to hacklab server
     ##systemctl restart networking

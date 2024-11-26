@@ -1,0 +1,28 @@
+services:
+  edge:
+    image: stmodanscs/kali-2023.1
+    container_name: edge
+    entrypoint: /entrypoint.sh
+    environment:
+      PASS: password00
+      ROOT: no
+      SSH:  yes
+    networks:
+      - hacklab00_net
+      - hacklab01_net
+      - hacklab02_net
+      - hacklab03_net
+      - hacklab04_net
+
+networks:
+  # see ../hacklabXX/compose.yaml
+  hacklab00_net:
+    external: true
+  hacklab01_net:
+    external: true
+  hacklab02_net:
+    external: true
+  hacklab03_net:
+    external: true
+  hacklab04_net:
+    external: true

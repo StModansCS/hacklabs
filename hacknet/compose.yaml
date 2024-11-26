@@ -1,0 +1,9 @@
+networks:
+  hacknet:
+    name: hacknet
+    driver: macvlan
+    driver_opts:
+      parent: ens19
+    ipam:
+      config:
+        - subnet: 172.1.0.0/16

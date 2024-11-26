@@ -8,10 +8,10 @@ services:
       ROOT: yes
       SSH:  yes
     networks:
-      hacklabXXXX_localnet:
+      hacklabXXXX_net:
         ipv4_address: 172.0.XXXX.11
-#      hacklabXXXX_hacknet:
-#        ipv4_address: 172.1.XXXX.11
+      hacknet:
+        ipv4_address: 172.1.XXXX.11
 
   hacklabXXXX_metasploitable2:
     image: stmodanscs/metasploitable2
@@ -28,7 +28,7 @@ services:
       SMB:  yes
       #SQL:  yes
     networks:
-      hacklabXXXX_localnet:
+      hacklabXXXX_net:
         ipv4_address: 172.0.XXXX.12
 
   hacklabXXXX_metasploitable3:
@@ -46,21 +46,18 @@ services:
       SMB:  yes
       SQL:  yes
     networks:
-      hacklabXXXX_localnet:
+      hacklabXXXX_net:
         ipv4_address: 172.0.XXXX.13
 
 networks:
-  hacklabXXXX_localnet:
-    name: hacklabXXXX_localnet
+  hacklabXXXX_net:
+    name: hacklabXXXX_net
+    driver_opts:
+      com.docker.network.bridge.inhibit_ipv4: "true"
     internal: true
     ipam:
       config:
         - subnet: 172.0.XXXX.0/24
-#  hacklabXXXX_hacknet:
-#    name: hacklabXXXX_hacknet
-#    driver: macvlan
-#    driver_opts:
-#      parent: ens19
-#    ipam:
-#      config:
-#        - subnet: 172.1.0.0/16
+  # see ../hacknet/compose.yaml
+  hacknet:
+    external: true
