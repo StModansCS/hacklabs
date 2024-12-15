@@ -19,6 +19,7 @@ services:
       hacklab05_net:
 
 networks:
+  # see ../networks/compose.yaml
   localnet:
     external: true
   # see ../hacklabXX/compose.yaml
