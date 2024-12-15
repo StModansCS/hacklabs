@@ -9,14 +9,18 @@ services:
       SSH:  yes
       #WEB: yes
     networks:
-      - hacklab00_net
-      - hacklab01_net
-      - hacklab02_net
-      - hacklab03_net
-      - hacklab04_net
-      - hacklab05_net
+      localnet:
+        ipv4_address: 192.168.0.3
+      hacklab00_net:
+      hacklab01_net:
+      hacklab02_net:
+      hacklab03_net:
+      hacklab04_net:
+      hacklab05_net:
 
 networks:
+  localnet:
+    external: true
   # see ../hacklabXX/compose.yaml
   hacklab00_net:
     external: true
