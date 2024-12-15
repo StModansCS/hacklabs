@@ -1,0 +1,33 @@
+services:
+  edge:
+    image: stmodanscs/edge
+    container_name: edge
+    entrypoint: /entrypoint.sh
+    environment:
+      PASS: user1
+      PASS: password1
+      ROOT: no
+      SSH:  yes
+      #WEB: yes
+    networks:
+      - hacklab00_net
+      - hacklab01_net
+      - hacklab02_net
+      - hacklab03_net
+      - hacklab04_net
+      - hacklab05_net
+
+networks:
+  # see ../hacklabXX/compose.yaml
+  hacklab00_net:
+    external: true
+  hacklab01_net:
+    external: true
+  hacklab02_net:
+    external: true
+  hacklab03_net:
+    external: true
+  hacklab04_net:
+    external: true
+  hacklab05_net:
+    external: true
