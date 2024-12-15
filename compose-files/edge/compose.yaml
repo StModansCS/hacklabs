@@ -4,7 +4,7 @@ services:
     container_name: edge
     entrypoint: /entrypoint.sh
     environment:
-      PASS: user1
+      USER: user1
       PASS: password1
       ROOT: no
       SSH:  yes
