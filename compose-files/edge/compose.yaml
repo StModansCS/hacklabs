@@ -6,7 +6,6 @@ services:
     environment:
       USER: user1
       PASS: password1
-      ROOT: no
       SSH:  yes
       #WEB: yes
     networks:
