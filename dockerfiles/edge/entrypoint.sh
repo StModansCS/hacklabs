@@ -3,14 +3,24 @@
 # clean exit
 trap "exit" SIGTERM
 
-# set password
-if [ $PASS ]; then
-  echo kladmin:$PASS | chpasswd
-
-  # enable root
-  if [ $ROOT ]; then
-    echo root:$PASS | chpasswd
-    usermod -a -G sudo kladmin
+# create user
+if [ $USER ]; then
+  useradd $USER
+  
+  # set password
+  if [ $PASS ]; then
+    echo $USER:$PASS | chpasswd
+  else
+    echo $USER:password1 | chpasswd
+  fi
+else
+  useradd user1
+  
+    # set password
+  if [ $PASS ]; then
+    echo user1:$PASS | chpasswd
+  else
+    echo user1:password1 | chpasswd
   fi
 fi
 
