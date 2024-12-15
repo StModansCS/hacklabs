@@ -11,6 +11,7 @@ networks:
     name: hacknet
     driver: macvlan
     driver_opts:
+      macvlan_mode: private
       parent: ens19
     ipam:
       config:
