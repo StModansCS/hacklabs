@@ -1,12 +1,4 @@
 networks:
-  localnet:
-    name: localnet
-    driver: macvlan
-    driver_opts:
-      parent: ens18
-    ipam:
-      config:
-        - subnet: 10.9.0.0/16
   hacknet:
     name: hacknet
     driver: macvlan
