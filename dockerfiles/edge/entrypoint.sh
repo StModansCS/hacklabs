@@ -6,7 +6,7 @@ trap "exit" SIGTERM
 # create user
 if [ $USER ]; then
   useradd $USER
-  
+
   # set password
   if [ $PASS ]; then
     echo $USER:$PASS | chpasswd
@@ -15,8 +15,8 @@ if [ $USER ]; then
   fi
 else
   useradd user1
-  
-    # set password
+
+  # set password
   if [ $PASS ]; then
     echo user1:$PASS | chpasswd
   else
