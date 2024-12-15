@@ -59,6 +59,6 @@ networks:
     ipam:
       config:
         - subnet: 172.0.XXXX.0/24
-  # see ../networks/compose.yaml
+  # see ../hacknet/compose.yaml
   hacknet:
     external: true
