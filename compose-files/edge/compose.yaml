@@ -19,9 +19,14 @@ services:
       hacklab05_net:
 
 networks:
-  # see ../networks/compose.yaml
   localnet:
-    external: true
+    name: localnet
+    driver: macvlan
+    driver_opts:
+      parent: ens18
+    ipam:
+      config:
+        - subnet: 192.168.0.0/24
   # see ../hacklabXX/compose.yaml
   hacklab00_net:
     external: true
