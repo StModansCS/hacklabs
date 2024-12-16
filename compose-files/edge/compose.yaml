@@ -11,14 +11,11 @@ services:
     networks:
       localnet:
         # local ip address (change this)
-        ipv4_address: 192.168.0.3
+        ipv4_address: 180.100.89.254
       # hacklabs
       hacklab00_net:
       hacklab01_net:
       hacklab02_net:
-      hacklab03_net:
-      hacklab04_net:
-      hacklab05_net:
 
 networks:
   localnet:
@@ -29,17 +26,11 @@ networks:
     ipam:
       config:
         # local ip subnet (change this)
-        - subnet: 192.168.0.0/24
+        - subnet: 180.100.0.0/16
   # see ../hacklabXX/compose.yaml
   hacklab00_net:
     external: true
   hacklab01_net:
     external: true
   hacklab02_net:
-    external: true
-  hacklab03_net:
-    external: true
-  hacklab04_net:
-    external: true
-  hacklab05_net:
     external: true
