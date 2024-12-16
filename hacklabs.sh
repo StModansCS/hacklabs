@@ -95,7 +95,7 @@ elif [ $1 == "up" ] ; then
     fi
 
     # start networks
-    docker compose --all-resources -f "${lab_path}/compose-files/networks/compose.yaml" up
+    docker compose --all-resources -f "${lab_path}/compose-files/hacknet/compose.yaml" up
     
     # start hacklabs
     for i in $(seq -f "%02g" 0 $((lab_count - 1))); do
@@ -127,7 +127,7 @@ elif [ $1 == "down" ]; then
     done
 
     # stop networks
-    docker compose --all-resources -f "${lab_path}/compose-files/networks/compose.yaml" down
+    docker compose --all-resources -f "${lab_path}/compose-files/hacknet/compose.yaml" down
 
     echo
     echo "The Clean Slate Protocol, sir?"
