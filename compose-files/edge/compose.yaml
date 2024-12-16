@@ -12,12 +12,12 @@ services:
       localnet:
         # local ip address (change this)
         ipv4_address: 192.168.0.3
-      hacklab00_net:
-      hacklab01_net:
-      hacklab02_net:
-      hacklab03_net:
-      hacklab04_net:
-      hacklab05_net:
+      hacklab00_net: {}
+      hacklab01_net: {}
+      hacklab02_net: {}
+      hacklab03_net: {}
+      hacklab04_net: {}
+      hacklab05_net: {}
 
 networks:
   localnet:
