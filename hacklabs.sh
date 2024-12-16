@@ -49,7 +49,8 @@ elif [ $1 == "create" ] ; then
     fi
 
     # remove old hacklabs
-    sed -i "'/hacklab[0-9][0-9]_net:/d; /external: true/d'" "${lab_path}/compose-files/edge/compose.yaml"
+    rm -rf "${lab_path}/compose-files/hacklab"*
+    sed -i "/hacklab[0-9][0-9]_net:/d; /external: true/d" "${lab_path}/compose-files/edge/compose.yaml"
     
     # create hacklabs
     for i in $(seq -f "%02g" 0 $((lab_count - 1))); do
@@ -138,5 +139,4 @@ elif [ $1 == "down" ]; then
 else
     print_usage
 fi
-
 
