@@ -21,7 +21,7 @@ if [ $# != 1 ]; then
     print_usage
 elif [ $1 == "install" ] ; then
     apt-get update
-    
+
     # add Docker"s official GPG key:
     apt-get install ca-certificates curl
     install -m 0755 -d /etc/apt/keyrings
@@ -41,7 +41,7 @@ elif [ $1 == "create" ] ; then
 
     # get passwords
     IFS=$"\r\n" GLOBIGNORE="*" command eval "passwords=($(cat ${lab_path}/passwords.txt))"
-    
+
     # check there are enough passwords
     if [ ${#passwords[@]} -lt $lab_count ]; then
         echo "Not enough entries in passwords.txt. Found ${#passwords[@]}"
@@ -50,13 +50,13 @@ elif [ $1 == "create" ] ; then
 
     # remove old hacklabs
     rm -rf "${lab_path}/compose-files/hacklab"*
-    
+
     # create hacklabs
     for i in $(seq -f "%02g" 0 $((lab_count - 1))); do
         # create docker compose files
         mkdir "${lab_path}/compose-files/hacklab${i}"
         cp "${lab_path}/compose-files/compose-template.yaml" "${lab_path}/compose-files/hacklab${i}/compose.yaml"
-        
+
         # edit compose files
         sed -i "s/hacklabXXXX_/hacklab${i}_/g" "${lab_path}/compose-files/hacklab${i}/compose.yaml"
         sed -i "s/.XXXX./.$(echo "${i}" | sed "s/^0//")./g" "${lab_path}/compose-files/hacklab${i}/compose.yaml"
@@ -71,7 +71,7 @@ elif [ $1 == "create" ] ; then
        	sed -i "/^      # hacklabs/a\ $(sed -n '/^networks:/,// { /name: /s/.*name: \(.*\)/     \1:/p }' ${lab_path}/compose-files/hacklab${i}/compose.yaml)" compose-files/edge/compose.yaml
        	sed -i "/^  # see/a\ $(sed -n '/^networks:/,// { /name: /s/.*name: \(.*\)/ \1:\\n    external: true/p }' ${lab_path}/compose-files/hacklab${i}/compose.yaml)" compose-files/edge/compose.yaml
     done
-        
+
 elif [ $1 == "up" ] ; then
     # remove IP from hacklab server
     ##ip address flush dev ens18
