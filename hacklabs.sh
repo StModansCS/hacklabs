@@ -2,7 +2,7 @@
 
 print_usage () {
     echo
-    echo "Usage:    labs.sh COMMAND"
+    echo "Usage:    hacklabs.sh COMMAND"
     echo
     echo "Classroom hacklabs"
     echo
