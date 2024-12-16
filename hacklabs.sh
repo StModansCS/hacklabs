@@ -66,19 +66,10 @@ elif [ $1 == "create" ] ; then
     # remove old hacklab networks from edge
     sed -i "/hacklab[0-9][0-9]_net:/d; /external: true/d" "${lab_path}/compose-files/edge/compose.yaml"
 
-    ## add hacklab networks to edge
-    for i in $(seq -f "%02g" 0 $((lab_count - 1))); do
-        # get network name from compose file
-        sed -n "/^networks:/,/^[^ ]/ { /name:/s/.*name: \(.*\)/      - \1/p }" "${lab_path}/compose-files/hacklab${i}/compose.yaml" >> "${lab_path}/compose-files/edge/compose.yaml"
-    done
-
-    ## add hacklab network definitions to edge
-    echo >> "${lab_path}/compose-files/edge/compose.yaml"
-    echo "networks:" >> "${lab_path}/compose-files/edge/compose.yaml"
-    echo "  # see ../hacklabXX/compose.yaml" >> "${lab_path}/compose-files/edge/compose.yaml"
-    for i in $(seq -f "%02g" 0 $((lab_count - 1))); do
-        sed -n "/^networks:/,/^[^ ]/ { /name:/s/.*name: \(.*\)/  \1:/p }" "${lab_path}/compose-files/hacklab${i}/compose.yaml" >> "${lab_path}/compose-files/edge/compose.yaml"
-        echo "    external: true" >> "${lab_path}/compose-files/edge/compose.yaml"
+    # add hacklab networks to edge
+    for i in $(seq -f "%02g" $((lab_count - 1)) -1 0); do
+       	sed -i "/^      # hacklabs/a\ $(sed -n '/^networks:/,// { /name: /s/.*name: \(.*\)/     \1:/p }' ${lab_path}/compose-files/hacklab${i}/compose.yaml)" compose-files/edge/compose.yaml
+       	sed -i "/^  # see/a\ $(sed -n '/^networks:/,// { /name: /s/.*name: \(.*\)/ \1:\\n    external: true/p }' ${lab_path}/compose-files/hacklab${i}/compose.yaml)" compose-files/edge/compose.yaml
     done
         
 elif [ $1 == "up" ] ; then
