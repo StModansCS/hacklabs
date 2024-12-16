@@ -21,9 +21,6 @@ if [ $# != 1 ]; then
     print_usage
 elif [ $1 == "install" ] ; then
     apt-get update
-
-    # install some tools first
-    apt-get --assume-yes install yq
     
     # add Docker"s official GPG key:
     apt-get install ca-certificates curl
