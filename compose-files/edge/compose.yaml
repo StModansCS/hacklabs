@@ -27,7 +27,7 @@ networks:
       config:
         # local ip subnet (change this)
         - subnet: 192.168.0.0/16
-  # see ../hacklabXX/compose.yaml
+  # hacklabs
   hacklab00_net:
     external: true
   hacklab01_net:
